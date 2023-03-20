@@ -15,12 +15,14 @@ class HomeScreen extends StatelessWidget {
   final auth = FirebaseAuth.instance;
 
   final colortheme = Colors.teal;
+  //final classList = Provider.of<ClassProvider>(context).classes;
 
+  // @override
   @override
   Widget build(BuildContext context) {
     //using the provider package
     //Provider.of<ClassProvider>(context).getClassesList();
-    final classList = Provider.of<ClassProvider>(context).classes;
+    //final classList = Provider.of<ClassProvider>(context,listen: false).classes;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -69,15 +71,25 @@ class HomeScreen extends StatelessWidget {
 
       //   ),
       // ),),
+       // final classList = Provider.of<ClassProvider>(context).classes;
+      // Consumer<ClassProvider>(
+      //   builder: ,
+      // ),
+
+
 
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
-          child: classList.isEmpty
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : GridView.builder(
+        child: Consumer<ClassProvider>(
+          builder: (context,classProvider , _){
+            final classList = classProvider.classes;
+            return Padding(
+              padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
+
+              child: classList.isEmpty
+                  ? const Center(
+                child: CircularProgressIndicator(),
+              )
+                  : GridView.builder(
                   itemCount: classList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
@@ -86,23 +98,57 @@ class HomeScreen extends StatelessWidget {
                     childAspectRatio: 2.0,
                   ),
                   itemBuilder: ((context, i) => InkWell(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.teal),
-                          child: Center(
-                            child: Text(
-                              classList[i].name,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.teal),
+                      child: Center(
+                        child: Text(
+                          classList[i].name,
+                          style: const TextStyle(fontSize: 20),
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(context, Records.routeName,arguments: classList[i].name);
-                        },
-                      ))),
-        ),
-      ),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, Records.routeName,arguments: classList[i].name);
+                    },
+                  ))),
+            );
+          },
+      //     child: Padding(
+      //       padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
+      //
+      //       child: classList.isEmpty
+      //           ? const Center(
+      //               child: CircularProgressIndicator(),
+      //             )
+      //           : GridView.builder(
+      //               itemCount: classList.length,
+      //               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      //                 crossAxisCount: 1,
+      //                 crossAxisSpacing: 10,
+      //                 mainAxisSpacing: 10,
+      //                 childAspectRatio: 2.0,
+      //               ),
+      //               itemBuilder: ((context, i) => InkWell(
+      //                     child: Container(
+      //                       decoration: BoxDecoration(
+      //                           borderRadius: BorderRadius.circular(25),
+      //                           color: Colors.teal),
+      //                       child: Center(
+      //                         child: Text(
+      //                           classList[i].name,
+      //                           style: const TextStyle(fontSize: 20),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     onTap: () {
+      //                       Navigator.pushNamed(context, Records.routeName,arguments: classList[i].name);
+      //                     },
+      //                   ))),
+      //     ),
+      //   ),
+      // ),
 
       // child: GridView(
       //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -142,6 +188,6 @@ class HomeScreen extends StatelessWidget {
       //     ),
       //   ],
       // ),
-    );
+    ),),);
   }
 }
