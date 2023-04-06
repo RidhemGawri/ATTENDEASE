@@ -1,8 +1,10 @@
+import 'package:attendanceapp/providers/class_provider.dart';
 import 'package:attendanceapp/ui/screens/calendar.dart';
 import 'package:attendanceapp/ui/screens/class_groups.dart';
 import 'package:attendanceapp/ui/screens/previous_record_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Records extends StatefulWidget {
   const Records({super.key});
@@ -17,6 +19,7 @@ class _RecordsState extends State<Records> {
   @override
   Widget build(BuildContext context) {
     final className = ModalRoute.of(context)?.settings.arguments as String;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -73,14 +76,29 @@ class _RecordsState extends State<Records> {
                                       color: Colors.teal),
                                   child: const Center(
                                     child: Text(
-                                      'View New Record',
+                                      'Add New Record',
                                       style:  TextStyle(fontSize: 20),
                                     ),
                                   ),
                                 ),
-                   onTap: () {
-                            Navigator.pushNamed(context, Calender.routeName,arguments: className );
-                          },
+                   onTap:(){
+                    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2022), lastDate: DateTime.now())
+                        .then((pickedDate) {
+                          if(pickedDate ==null){
+                            //this means user has pressed cancel
+                            return;
+                          }
+                          //when the user has picked a date we need to add an entry to the db
+                      //so will create a function in the provider file and call it here
+                          Provider.of<ClassProvider>(context,listen: false).createNewRecord(className, pickedDate.toString());
+
+                      
+
+                    });
+                   },
+                   // onTap: () {
+                   //          Navigator.pushNamed(context, Calender.routeName,arguments: className );
+                   //        },
                 ),
 
            ],

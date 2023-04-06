@@ -28,8 +28,11 @@ class ClassProvider with ChangeNotifier {
 
   //method to get the list of classes from firebase
   Future getClassesList() async {
+    //_classes.clear();
+
     await classList.get().then((querySnapshot) {
-      //querySnapshot is the list of all the documents in classes collection
+      //querySnapshot is the list of all the documents in classes collection\
+      _classes.clear();
       for (var element in querySnapshot.docs) {
         _classes.add(Class(
             name: element.get("className"),
@@ -60,10 +63,11 @@ class ClassProvider with ChangeNotifier {
   //below is the code to fetch the previous records from firebase
 
    Future getRecordList(String className)  async {
-     _recordList.clear();
+
      final CollectionReference currentRecordList = classList.doc(className)
          .collection('record');
      await currentRecordList.get().then((querySnapshot) {
+       _recordList.clear();
        for (var element in querySnapshot.docs) {
          _recordList.add(element.id);
        }
@@ -74,7 +78,7 @@ class ClassProvider with ChangeNotifier {
 
     //below is the code to fetch all the student roll numbers in a class
    Future getStudentList(String className, String recordDate) async{
-    _studentList.clear();
+    
     final  currentRecordDate = classList.doc(className).collection('record').doc(recordDate);//this currentRecordDate stores the id of document we are trying to access
     final data = await currentRecordDate.get();
     Map<String, dynamic> values = data.data() as Map<String, bool>;//this map contains all the values
@@ -84,5 +88,21 @@ class ClassProvider with ChangeNotifier {
      notifyListeners();
 
    }
+
+   //a method to create a new  attendance record in class
+   void createNewRecord(String className , String date){
+    print("runnig the create new record method in provider file");
+    final dbRef = FirebaseFirestore.instance.collection('classes').doc(className).collection('record').doc(date);
+     //the data to be entered
+     final Map<String, bool>  data = {
+      'Himanshu Bansal': false,
+     'Ridhem Gawri' : false,
+     'Nikita':false,
+     'babaBlackSheep': false
+     };
+    dbRef.set(data);
+    notifyListeners();
+   }
+
 
 }

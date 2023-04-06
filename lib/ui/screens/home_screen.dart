@@ -85,11 +85,13 @@ class HomeScreen extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
 
-              child: classList.isEmpty
+              child:
+              classList.isEmpty
                   ? const Center(
                 child: CircularProgressIndicator(),
               )
-                  : GridView.builder(
+                  :
+              GridView.builder(
                   itemCount: classList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
