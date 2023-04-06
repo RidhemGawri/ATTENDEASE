@@ -1,6 +1,6 @@
 import 'package:attendanceapp/providers/class_provider.dart';
 import 'package:attendanceapp/ui/screens/calendar.dart';
-import 'package:attendanceapp/ui/screens/class_groups.dart';
+import 'package:attendanceapp/ui/screens/student_list_screen.dart';
 import 'package:attendanceapp/ui/screens/previous_record_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -91,6 +91,9 @@ class _RecordsState extends State<Records> {
                           //when the user has picked a date we need to add an entry to the db
                       //so will create a function in the provider file and call it here
                           Provider.of<ClassProvider>(context,listen: false).createNewRecord(className, pickedDate.toString());
+                          //now we can add the new records to the database
+                      //after adding them we gonna fetch them from db and show as listview in student_list_screen
+                      Navigator.pushNamed(context, StudentListScreen.routeName,arguments: {'name': className , 'recordDate':pickedDate.toString()});
 
                       
 

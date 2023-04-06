@@ -81,9 +81,10 @@ class ClassProvider with ChangeNotifier {
     
     final  currentRecordDate = classList.doc(className).collection('record').doc(recordDate);//this currentRecordDate stores the id of document we are trying to access
     final data = await currentRecordDate.get();
-    Map<String, dynamic> values = data.data() as Map<String, bool>;//this map contains all the values
+    _studentList.clear();
+    Map<String, dynamic> values = data.data() as Map<String, dynamic>;//this map contains all the values
      values.forEach((key, value) {
-       _studentList.add(Student(name: key, isPresent: values[key]));
+       _studentList.add(Student(name: key, isPresent: value));
      });
      notifyListeners();
 
