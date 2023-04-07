@@ -22,9 +22,11 @@ class PreviousRecordScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Current class"),
       ),
       body: ListView.builder(itemCount: currentRecordList.length,itemBuilder: (BuildContext ctx , int index){
-        return ListTile(title: Text(currentRecordList[index]),onTap: (){Navigator.pushNamed(context, ClassGroups.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });},);
-
-
+        return ListTile(title: Text(currentRecordList[
+          index]),onTap: (){
+            Navigator.pushNamed(context, ClassGroups.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });
+            },
+          );
       }),
     );
   }
