@@ -1,5 +1,5 @@
 import 'package:attendanceapp/providers/class_provider.dart';
-import 'package:attendanceapp/ui/screens/class_groups.dart';
+import 'package:attendanceapp/ui/screens/student_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //this screen will get all the previous record dates available in record collection of each class
@@ -22,7 +22,7 @@ class PreviousRecordScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Current class"),
       ),
       body: ListView.builder(itemCount: currentRecordList.length,itemBuilder: (BuildContext ctx , int index){
-        return ListTile(title: Text(currentRecordList[index]),onTap: (){Navigator.pushNamed(context, ClassGroups.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });},);
+        return ListTile(title: Text(currentRecordList[index]),onTap: (){Navigator.pushNamed(context, StudentListScreen.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });},);
 
 
       }),

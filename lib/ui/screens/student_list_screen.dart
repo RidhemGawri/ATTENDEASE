@@ -1,18 +1,18 @@
 import 'package:attendanceapp/providers/class_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:attendanceapp/ui/screens/class_groups.dart';
+import 'package:attendanceapp/ui/screens/student_list_screen.dart';
 
-class ClassGroups extends StatefulWidget {
-  const ClassGroups({super.key});
+class StudentListScreen extends StatefulWidget {
+  const StudentListScreen({super.key});
 
   static const routeName = '/class_groups';
 
   @override
-  State<ClassGroups> createState() => _ClassGroupsState();
+  State<StudentListScreen> createState() => _StudentListScreenState();
 }
 
-class _ClassGroupsState extends State<ClassGroups> {
+class _StudentListScreenState extends State<StudentListScreen> {
   //bool? _isChecked = false;
   @override
   Widget build(BuildContext context) {
