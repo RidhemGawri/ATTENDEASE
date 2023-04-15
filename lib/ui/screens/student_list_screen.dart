@@ -1,7 +1,6 @@
 import 'package:attendanceapp/providers/class_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:attendanceapp/ui/screens/student_list_screen.dart';
 
 class StudentListScreen extends StatefulWidget {
   const StudentListScreen({super.key});
@@ -13,28 +12,61 @@ class StudentListScreen extends StatefulWidget {
 }
 
 class _StudentListScreenState extends State<StudentListScreen> {
-  //bool? _isChecked = false;
+  List<String> studentlist = [];
+  late List<bool> _isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    _isChecked = List<bool>.filled(studentlist.length, false);
+  }
+
   @override
   Widget build(BuildContext context) {
     //getting the name of class we are in
-    final argsData = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    Provider.of<ClassProvider>(context).getStudentList(argsData['name']!, argsData['recordDate']!);//called the function
+    final argsData =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+    Provider.of<ClassProvider>(context).getStudentList(
+        argsData['name']!, argsData['recordDate']!); //called the function
 
-
-    final loadedClass = Provider.of<ClassProvider>(context).findById(
-        argsData['name']!); //this findById method is defined in class_provider.dart file
+    final loadedClass = Provider.of<ClassProvider>(context).findById(argsData[
+        'name']!); //this findById method is defined in class_provider.dart file
 
     final studentList = Provider.of<ClassProvider>(context).studentList;
 
     //lets return just a listview
-    return Scaffold(appBar: AppBar(title: Text(loadedClass.name),),
-    body: ListView.builder(itemBuilder:(BuildContext ctx , int index){
-      return  ListTile(title: Text(studentList[index].name),
-        leading: Checkbox(value: studentList[index].isPresent, onChanged: null,),
-
-      );
-    },itemCount: studentList.length),
-      );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(loadedClass.name),
+      ),
+      body: ListView.builder(
+          itemBuilder: (BuildContext ctx, int index) {
+            return Card(
+              shadowColor: Colors.teal,
+              shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+               ),
+               elevation: 2,
+              child: ListTile(
+                title: Text(studentList[index].name),
+                leading: Checkbox(
+                    value: studentList[index].isPresent,
+                    onChanged: (val) {
+                      setState(
+                        () {
+                          _isChecked[index] = val!;
+                        },
+                      );
+                    }),
+              ),
+            );
+          },
+          itemCount: studentList.length),
+           floatingActionButton: const FloatingActionButton(
+             onPressed: null,
+             child: Icon(Icons.save),
+      ),
+    );
 
     // return DefaultTabController(
     //   length: 2,
