@@ -13,6 +13,9 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Today's attendance"),
+      ),
       body: SafeArea(
         child: TableCalendar(
           focusedDay: DateTime.now(),
