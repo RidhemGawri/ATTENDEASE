@@ -78,7 +78,7 @@ class ClassProvider with ChangeNotifier {
 
     //below is the code to fetch all the student roll numbers in a class
    Future getStudentList(String className, String recordDate) async{
-    
+
     final  currentRecordDate = classList.doc(className).collection('record').doc(recordDate);//this currentRecordDate stores the id of document we are trying to access
     final data = await currentRecordDate.get();
     _studentList.clear();
@@ -103,6 +103,14 @@ class ClassProvider with ChangeNotifier {
      };
     dbRef.set(data);
     notifyListeners();
+   }
+
+   void updateRecord(String className, String date,Map<String,bool> newData){
+    print("updating the records by running updateRecord method in provider file");
+    final dbRef= FirebaseFirestore.instance.collection('classes').doc(className).collection('record').doc(date);
+    dbRef.update(newData);
+    notifyListeners();
+
    }
 
 

@@ -11,7 +11,7 @@ class Class {
 }
 class Student{
   final String name;
-  final bool isPresent;
+  bool isPresent;
 
   Student({
    required this.name,

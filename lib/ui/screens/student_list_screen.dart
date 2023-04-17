@@ -1,6 +1,9 @@
-import 'package:attendanceapp/providers/class_provider.dart';
+import 'package:attendanceapp/models/class.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/class_provider.dart';
 
 class StudentListScreen extends StatefulWidget {
   const StudentListScreen({super.key});
@@ -12,27 +15,54 @@ class StudentListScreen extends StatefulWidget {
 }
 
 class _StudentListScreenState extends State<StudentListScreen> {
-  List<String> studentlist = [];
-  late List<bool> _isChecked;
+  List<Student> studentList = [];
+  Map<String, String> argsData = <String,String>{};
 
-  @override
-  void initState() {
-    super.initState();
-    _isChecked = List<bool>.filled(studentlist.length, false);
-  }
+  // Future getStudentList(String className, String recordDate) async{
+  //
+  //   final  currentRecordDate = FirebaseFirestore.instance.collection(
+  //       "classes").doc(className).collection('record').doc(recordDate);//this currentRecordDate stores the id of document we are trying to access
+  //   final data = await currentRecordDate.get();
+  //   //studentList.clear();
+  //   Map<String, dynamic> values = data.data() as Map<String, dynamic>;//this map contains all the values
+  //   values.forEach((key, value) {
+  //     studentList.add(Student(name: key, isPresent: value));
+  //   });
+  //   //notifyListeners();
+  //
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if(argsData.isEmpty){
+  //     setState(() {
+  //        const CircularProgressIndicator();
+  //     });
+  //   }else{
+  //     getStudentList(argsData['name']!, argsData['recordDate']!);
+  //
+  //   }
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
     //getting the name of class we are in
-    final argsData =
+      argsData =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     Provider.of<ClassProvider>(context).getStudentList(
         argsData['name']!, argsData['recordDate']!); //called the function
 
-    final loadedClass = Provider.of<ClassProvider>(context).findById(argsData[
+     //getStudentList(argsData['name']!, argsData['recordDate']!);//we should put  it in init state
+
+
+
+     final loadedClass = Provider.of<ClassProvider>(context).findById(argsData[
         'name']!); //this findById method is defined in class_provider.dart file
 
-    final studentList = Provider.of<ClassProvider>(context).studentList;
+    studentList = Provider.of<ClassProvider>(context).studentList;//now we have a student list which contains the list of all students
+
 
     //lets return just a listview
     return Scaffold(
@@ -49,12 +79,21 @@ class _StudentListScreenState extends State<StudentListScreen> {
                elevation: 2,
               child: ListTile(
                 title: Text(studentList[index].name),
-                leading: Checkbox(
+                trailing: Checkbox(
                     value: studentList[index].isPresent,
+
+
                     onChanged: (val) {
+                      //first we change the value in list
+                      //studentList[index].isPresent = val!;
+                      print(val);
+
                       setState(
                         () {
-                          _isChecked[index] = val!;
+                          studentList[index].isPresent =val!;
+                          print(val);
+                          print(studentList[index].isPresent);
+
                         },
                       );
                     }),
@@ -62,8 +101,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
             );
           },
           itemCount: studentList.length),
-           floatingActionButton: const FloatingActionButton(
-             onPressed: null,
+           floatingActionButton:  FloatingActionButton(
+             onPressed: (){
+               //this will update the record in firebase
+               var updatedData ={ for (var e in studentList) e.name : e.isPresent };
+               Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,updatedData);
+
+             },
              child: Icon(Icons.save),
       ),
     );
