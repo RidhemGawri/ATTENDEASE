@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../providers/class_provider.dart';
 
 class StudentListScreen extends StatefulWidget {
-  const StudentListScreen({super.key});
+   StudentListScreen({super.key});
 
   static const routeName = '/class_groups';
 
@@ -16,42 +16,16 @@ class StudentListScreen extends StatefulWidget {
 
 class _StudentListScreenState extends State<StudentListScreen> {
   List<Student> studentList = [];
+
   Map<String, String> argsData = <String,String>{};
-
+  @override
   // Future getStudentList(String className, String recordDate) async{
-  //
-  //   final  currentRecordDate = FirebaseFirestore.instance.collection(
-  //       "classes").doc(className).collection('record').doc(recordDate);//this currentRecordDate stores the id of document we are trying to access
-  //   final data = await currentRecordDate.get();
-  //   //studentList.clear();
-  //   Map<String, dynamic> values = data.data() as Map<String, dynamic>;//this map contains all the values
-  //   values.forEach((key, value) {
-  //     studentList.add(Student(name: key, isPresent: value));
-  //   });
-  //   //notifyListeners();
-  //
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if(argsData.isEmpty){
-  //     setState(() {
-  //        const CircularProgressIndicator();
-  //     });
-  //   }else{
-  //     getStudentList(argsData['name']!, argsData['recordDate']!);
-  //
-  //   }
-  //
-  // }
-
   @override
   Widget build(BuildContext context) {
     //getting the name of class we are in
       argsData =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    Provider.of<ClassProvider>(context).getStudentList(
+    Provider.of<ClassProvider>(context,listen: false).getStudentList(
         argsData['name']!, argsData['recordDate']!); //called the function
 
      //getStudentList(argsData['name']!, argsData['recordDate']!);//we should put  it in init state
@@ -61,7 +35,9 @@ class _StudentListScreenState extends State<StudentListScreen> {
      final loadedClass = Provider.of<ClassProvider>(context).findById(argsData[
         'name']!); //this findById method is defined in class_provider.dart file
 
-    studentList = Provider.of<ClassProvider>(context).studentList;//now we have a student list which contains the list of all students
+    studentList = Provider.of<ClassProvider>(context,listen: false).studentList;//now we have a student list which contains the list of all students
+    //creating a local list to store the data locally so its easier to change
+      //List<Student> localList = List.castFrom(studentList);//this is just the local list not connected with db in any sense
 
 
     //lets return just a listview
@@ -83,19 +59,25 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     value: studentList[index].isPresent,
 
 
-                    onChanged: (val) {
-                      //first we change the value in list
+                    onChanged: ( val) {
+                      //whenever the value is changed we need to change it instantly in the db
+                      Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,
+                          {
+                            studentList[index].name : val!,
+                          });
+
                       //studentList[index].isPresent = val!;
-                      print(val);
-
-                      setState(
-                        () {
-                          studentList[index].isPresent =val!;
-                          print(val);
-                          print(studentList[index].isPresent);
-
-                        },
-                      );
+                      //print(val);
+                      //
+                      // setState(
+                      //   () {
+                      //     // studentList[index].isPresent =val!;
+                      //     // print(val);
+                      //     // print(studentList[index].isPresent);
+                      //     localList[index].isPresent = val!;
+                      //
+                      //   },
+                      //);
                     }),
               ),
             );
@@ -103,9 +85,10 @@ class _StudentListScreenState extends State<StudentListScreen> {
           itemCount: studentList.length),
            floatingActionButton:  FloatingActionButton(
              onPressed: (){
-               //this will update the record in firebase
-               var updatedData ={ for (var e in studentList) e.name : e.isPresent };
-               Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,updatedData);
+               // //this will update the record in firebase
+               // var updatedData ={ for (var e in studentList) e.name : e.isPresent };
+               // Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,updatedData);
+               Navigator.pop(context);
 
              },
              child: Icon(Icons.save),
