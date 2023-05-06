@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../providers/class_provider.dart';
 
 class StudentListScreen extends StatefulWidget {
-   StudentListScreen({super.key});
+   const StudentListScreen({super.key});
 
   static const routeName = '/class_groups';
 
@@ -38,8 +38,6 @@ class _StudentListScreenState extends State<StudentListScreen> {
     studentList = Provider.of<ClassProvider>(context,listen: false).studentList;//now we have a student list which contains the list of all students
     //creating a local list to store the data locally so its easier to change
       //List<Student> localList = List.castFrom(studentList);//this is just the local list not connected with db in any sense
-
-
     //lets return just a listview
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +46,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
       body: ListView.builder(
           itemBuilder: (BuildContext ctx, int index) {
             return Card(
-              shadowColor: Colors.teal,
+              shadowColor: const Color.fromARGB(255, 241, 165, 163),
               shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                ),
@@ -56,9 +54,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
               child: ListTile(
                 title: Text(studentList[index].name),
                 trailing: Checkbox(
+                    activeColor:Color.fromARGB(255, 241, 165, 163),
                     value: studentList[index].isPresent,
-
-
                     onChanged: ( val) {
                       //whenever the value is changed we need to change it instantly in the db
                       Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,
@@ -84,14 +81,14 @@ class _StudentListScreenState extends State<StudentListScreen> {
           },
           itemCount: studentList.length),
            floatingActionButton:  FloatingActionButton(
+            backgroundColor:const Color.fromARGB(255, 241, 165, 163),
              onPressed: (){
                // //this will update the record in firebase
                // var updatedData ={ for (var e in studentList) e.name : e.isPresent };
                // Provider.of<ClassProvider>(context,listen: false).updateRecord(argsData['name']!, argsData['recordDate']!,updatedData);
                Navigator.pop(context);
-
              },
-             child: Icon(Icons.save),
+             child: const Icon(Icons.save),
       ),
     );
 

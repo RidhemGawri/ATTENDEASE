@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   final auth = FirebaseAuth.instance;
 
-  final colortheme = Colors.teal;
+  final colortheme =Color(0xffefa57a);
   //final classList = Provider.of<ClassProvider>(context).classes;
 
   // @override
@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 241, 165, 163),
         //  shadowColor: Colors.transparent,
         automaticallyImplyLeading: false,
         title: const Center(
@@ -76,15 +76,12 @@ class HomeScreen extends StatelessWidget {
       //   builder: ,
       // ),
 
-
-
       body: Center(
         child: Consumer<ClassProvider>(
           builder: (context,classProvider , _){
             final classList = classProvider.classes;
             return Padding(
-              padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
-
+              padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
               child:
               classList.isEmpty
                   ? const Center(
@@ -103,7 +100,17 @@ class HomeScreen extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: Colors.teal),
+                          //: Color.fromARGB(255, 241, 165, 163)
+                          gradient: LinearGradient(
+                             begin: Alignment.topRight,
+                             end: Alignment.bottomLeft,
+                             colors:[
+                               Color(0xfffefa58a),
+                             //  Color(0xfffefa57a),
+                               Color.fromARGB(255, 241, 165, 163),
+                              ],
+                           ),
+                          ),
                       child: Center(
                         child: Text(
                           classList[i].name,
@@ -151,7 +158,7 @@ class HomeScreen extends StatelessWidget {
       //     ),
       //   ),
       // ),
-
+          
       // child: GridView(
       //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       //     crossAxisCount: 2,  // number of columns
@@ -190,6 +197,6 @@ class HomeScreen extends StatelessWidget {
       //     ),
       //   ],
       // ),
-    ),),);
+        ),),);
   }
 }

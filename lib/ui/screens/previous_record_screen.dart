@@ -22,9 +22,13 @@ class PreviousRecordScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Current class"),
       ),
       body: ListView.builder(itemCount: currentRecordList.length,itemBuilder: (BuildContext ctx , int index){
-        return ListTile(title: Text(currentRecordList[index]),onTap: (){Navigator.pushNamed(context, StudentListScreen.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });},);
-
-
+        return Card(
+          shadowColor: Color.fromARGB(255, 245, 165, 163),
+              shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+               ),
+               elevation: 2,
+          child: ListTile(title: Text(currentRecordList[index]),onTap: (){Navigator.pushNamed(context, StudentListScreen.routeName,arguments: {'name': className , 'recordDate':currentRecordList[index] });},));
       }),
     );
   }

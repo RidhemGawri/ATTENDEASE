@@ -18,7 +18,6 @@ void main() async {
       .initializeApp(); // Firebase.initializedApp() needs to call native code to initialize firebase,
   // and since the plugins needs to use platform channels to call the native code,which is done asynchronously by calling ensureinitialized()
   //to make sure that we have an instance of widget binding.
-  // video in the group..
   runApp(const MyApp());
 }
 
@@ -32,10 +31,14 @@ class MyApp extends StatelessWidget {
       create: (ctx) => ClassProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        // title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
-        ),
+        theme: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: const Color(0xffefa59a),
+           ),
+         ),
+        // theme: ThemeData(
+        //   primarySwatch:Colors.orange,
+        // ),
         home: const SplashScreen(),
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
