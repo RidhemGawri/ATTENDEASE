@@ -9,12 +9,20 @@ class Class {
     required this.instructor,
   });
 }
-class Student{
+
+class Student {
   final String name;
   bool isPresent;
 
-  Student({
-   required this.name,
-   required this.isPresent
-});
+  Student({required this.name, required this.isPresent});
+}
+
+class myRecord {
+  final String subject;
+  final int presentCount;
+
+  myRecord({
+    required this.subject,
+    required this.presentCount,
+  });
 }

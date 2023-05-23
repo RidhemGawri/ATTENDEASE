@@ -1,6 +1,7 @@
 
 import 'package:attendanceapp/providers/class_provider.dart';
 import 'package:attendanceapp/ui/auth/login_screen.dart';
+import 'package:attendanceapp/ui/screens/my_record.dart';
 import 'package:attendanceapp/ui/screens/student_list_screen.dart';
 import 'package:attendanceapp/ui/screens/home_screen.dart';
 import 'package:attendanceapp/ui/screens/previous_record_screen.dart';
@@ -39,7 +40,12 @@ class MyApp extends StatelessWidget {
         // theme: ThemeData(
         //   primarySwatch:Colors.orange,
         // ),
-        home: const SplashScreen(),
+
+
+        //starting with myrecord screen just to make sure we can query the data
+        home:MyRecord(),
+        //home: const SplashScreen(),
+
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
           LoginScreen.routeName: (ctx) => const LoginScreen(),

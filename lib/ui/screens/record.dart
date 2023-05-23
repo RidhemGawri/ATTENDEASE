@@ -45,7 +45,7 @@ class _RecordsState extends State<Records> {
               //     ),
               //    ],
               //   ),
-               SizedBox(height: 30),
+               const SizedBox(height: 30),
                 InkWell(
                   onTap:(){ Navigator.pushNamed(context, PreviousRecordScreen.routeName , arguments: className);},
                   child: Container(
@@ -55,7 +55,7 @@ class _RecordsState extends State<Records> {
                        // margin: new EdgeInsets.symmetric(horizontal: 50,vertical: 50),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        gradient: LinearGradient(
+                                        gradient: const LinearGradient(
                              begin: Alignment.topRight,
                              end: Alignment.bottomLeft,
                              colors:[
@@ -84,7 +84,7 @@ class _RecordsState extends State<Records> {
                        // margin: new EdgeInsets.symmetric(horizontal: 50,vertical: 50),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        gradient: LinearGradient(
+                                        gradient: const LinearGradient(
                              begin: Alignment.topRight,
                              end: Alignment.bottomLeft,
                              colors:[

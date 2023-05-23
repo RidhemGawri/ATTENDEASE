@@ -1,4 +1,5 @@
 import 'package:attendanceapp/models/class.dart';
+import 'package:attendanceapp/ui/screens/my_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,8 @@ class ClassProvider with ChangeNotifier {
     //this list will store the students
 
   ];
+  final List<MyRecord> _myRecordList=[];
+
 
 
 
@@ -55,6 +58,10 @@ class ClassProvider with ChangeNotifier {
 
   List<Student> get studentList{
     return [..._studentList];
+  }
+
+  List<MyRecord> get myRecordList{
+    return[..._myRecordList];
   }
 
   Class findById(String className) {
@@ -110,6 +117,52 @@ class ClassProvider with ChangeNotifier {
     final dbRef= FirebaseFirestore.instance.collection('classes').doc(className).collection('record').doc(date);
     dbRef.update(newData);
     notifyListeners();
+
+   }
+
+
+
+   //this is the method to fetch the number of attendance of a particular student
+   //main idea is to fetch alll the documents where the student has a value of true
+   //this should take classname as argument
+   Future  getMyAttendance(String className,String studentName) async{
+    //here we need to first get the subject name and then put it in the subject field
+     int myAttendance = 0;
+     int totalAttendance = 0;
+
+     QuerySnapshot querySnapshot = await classList.doc(className).collection('record').get();
+     for (var element in querySnapshot.docs) {
+       if(element.get(studentName)==true){
+         myAttendance++;
+         totalAttendance++;
+       }
+       else{
+         totalAttendance++;
+       }
+     }
+
+
+     // classList.doc(className).collection('record').get()
+     //
+     //     .then((value) {
+     //   for (var element in value.docs) {
+     //     if(element.get(studentName) == true){
+     //       myAttendance++;
+     //       totalAttendance++;
+     //     }
+     //     else{
+     //       totalAttendance++;
+     //     }
+     //   }
+     // });
+     print(className);
+     print(studentName);
+     print(myAttendance);
+
+     return {
+       'myAttendance':myAttendance,
+       'totalAttendance':totalAttendance,
+     };
 
    }
 
